@@ -18,7 +18,15 @@ public class MoveValidator {
      * @param side
      * @return
      */
-    public static boolean isCastlingAvailableForSide(GameBoard gameBoard, Side side) {
+    public static boolean isCastlingValidForKingSide(GameBoard gameBoard, Side side) {
+        return true;
+    }
+
+    public static boolean isCastlingValidForQueenSide(GameBoard gameBoard, Side side) {
+        return true;
+    }
+
+    public static boolean isEnPassantTargetValid(GameBoard gameBoard,Side side){
         return true;
     }
 
