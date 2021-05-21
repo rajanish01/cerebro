@@ -18,6 +18,10 @@ public class PermissiblePositionGenerator {
     private static final int MAX_COL = 7;
     private static final int MIN_COL = 0;
 
+    private PermissiblePositionGenerator() {
+        throw new IllegalStateException("Utility Class");
+    }
+
     public static List<Position> possiblePositionsForPawn(Game game, ChessPiece activePawn) throws Exception {
         List<Position> validPositions = Lists.newArrayList();
         int currentColumn = activePawn.getCurrentPosition().getColumn();
