@@ -3,8 +3,8 @@ package com.epex.cerebro.inner;
 import com.epex.cerebro.validator.MoveValidator;
 import com.epex.cosmos.domain.ChessPiece;
 import com.epex.cosmos.domain.Game;
-import com.epex.cosmos.domain.GameBoard;
 import com.epex.cosmos.enums.Position;
+import com.epex.cosmos.enums.Side;
 import com.google.common.collect.Lists;
 
 import java.util.List;
@@ -23,16 +23,43 @@ public class PermissiblePositionGenerator {
         int currentColumn = activePawn.getCurrentPosition().getColumn();
         int currentRow = activePawn.getCurrentPosition().getRow();
         Position expectedPosition;
-        if (currentRow == 1) {
-            expectedPosition = Position.fromValue(currentColumn, currentRow + 1);
-            if (MoveValidator.isValidPositionToMove(game, expectedPosition))
+        if (activePawn.getPiece().getSide() == Side.WHITE) {
+            if (currentRow == 6) {
+                expectedPosition = Position.fromValue(currentColumn, currentRow - 1);
+                if (MoveValidator.isValidPositionToMove(game, expectedPosition))
+                    validPositions.add(expectedPosition);
+                expectedPosition = Position.fromValue(currentColumn, currentRow - 2);
+                if (MoveValidator.isValidPositionToMove(game, expectedPosition))
+                    validPositions.add(expectedPosition);
+            } else {
+                expectedPosition = Position.fromValue(currentColumn, currentRow - 1);
+                if (MoveValidator.isValidPositionToMove(game, expectedPosition))
+                    validPositions.add(expectedPosition);
+            }
+            expectedPosition = Position.fromValue(currentColumn - 1, currentRow - 1);
+            if (MoveValidator.isPawnAttacking(game, expectedPosition))
                 validPositions.add(expectedPosition);
-            expectedPosition = Position.fromValue(currentColumn, currentRow + 2);
-            if (MoveValidator.isValidPositionToMove(game, expectedPosition))
+            expectedPosition = Position.fromValue(currentColumn + 1, currentRow - 1);
+            if (MoveValidator.isPawnAttacking(game, expectedPosition))
                 validPositions.add(expectedPosition);
         } else {
-            expectedPosition = Position.fromValue(currentColumn, currentRow + 1);
-            if (MoveValidator.isValidPositionToMove(game, expectedPosition))
+            if (currentRow == 1) {
+                expectedPosition = Position.fromValue(currentColumn, currentRow + 1);
+                if (MoveValidator.isValidPositionToMove(game, expectedPosition))
+                    validPositions.add(expectedPosition);
+                expectedPosition = Position.fromValue(currentColumn, currentRow + 2);
+                if (MoveValidator.isValidPositionToMove(game, expectedPosition))
+                    validPositions.add(expectedPosition);
+            } else {
+                expectedPosition = Position.fromValue(currentColumn, currentRow + 1);
+                if (MoveValidator.isValidPositionToMove(game, expectedPosition))
+                    validPositions.add(expectedPosition);
+            }
+            expectedPosition = Position.fromValue(currentColumn - 1, currentRow + 1);
+            if (MoveValidator.isPawnAttacking(game, expectedPosition))
+                validPositions.add(expectedPosition);
+            expectedPosition = Position.fromValue(currentColumn + 1, currentRow + 1);
+            if (MoveValidator.isPawnAttacking(game, expectedPosition))
                 validPositions.add(expectedPosition);
         }
         return validPositions;
@@ -164,16 +191,42 @@ public class PermissiblePositionGenerator {
             if (MoveValidator.isValidPositionToMove(game, expectedPosition))
                 validPositions.add(expectedPosition);
         }
-
         return validPositions;
     }
 
-    public static List<Position> possiblePositionsForQueen(GameBoard gameBoard, Position currentPosition) {
-        return Lists.newArrayList();
+    public static List<Position> possiblePositionsForQueen(Game game, ChessPiece activeQueen) throws Exception {
+        List<Position> validPositions = possiblePositionsForBishop(game, activeQueen);
+        validPositions.addAll(possiblePositionsForRook(game, activeQueen));
+        return validPositions;
     }
 
-    public static List<Position> possiblePositionsForKing(GameBoard gameBoard, Position currentPosition) {
-        return Lists.newArrayList();
+    public static List<Position> possiblePositionsForKing(Game game, ChessPiece activeKing) throws Exception {
+        List<Position> validPositions = Lists.newArrayList();
+        int currentColumn = activeKing.getCurrentPosition().getColumn();
+        int currentRow = activeKing.getCurrentPosition().getRow();
+        Position expectedPosition;
+
+        if (currentColumn + 1 <= MAX_COL) {
+            expectedPosition = Position.fromValue(currentColumn + 1, currentRow);
+            if (MoveValidator.isValidPositionToMove(game, expectedPosition))
+                validPositions.add(expectedPosition);
+        }
+        if (currentRow - 1 >= MIN_ROW) {
+            expectedPosition = Position.fromValue(currentColumn, currentRow - 1);
+            if (MoveValidator.isValidPositionToMove(game, expectedPosition))
+                validPositions.add(expectedPosition);
+        }
+        if (currentColumn - 1 >= MIN_COL) {
+            expectedPosition = Position.fromValue(currentColumn - 1, currentRow);
+            if (MoveValidator.isValidPositionToMove(game, expectedPosition))
+                validPositions.add(expectedPosition);
+        }
+        if (currentRow + 1 <= MAX_ROW) {
+            expectedPosition = Position.fromValue(currentColumn, currentRow + 1);
+            if (MoveValidator.isValidPositionToMove(game, expectedPosition))
+                validPositions.add(expectedPosition);
+        }
+        return validPositions;
     }
 
 }

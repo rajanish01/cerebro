@@ -29,12 +29,17 @@ public class MoveValidator {
         return true;
     }
 
-    public static boolean isEnPassantTargetValid(Game game, Side side) {
+    public static boolean isPawnEnPassing(Game game, Position position) {
         return true;
     }
 
     public static boolean isKingInCheck(Game game) {
         return false;
+    }
+
+    public static boolean isPawnAttacking(Game game, Position position) {
+        ChessPiece chessPieceAtPosition = game.getGameBoard().getChessPieces()[position.getColumn()][position.getRow()];
+        return chessPieceAtPosition != null || isPawnEnPassing(game, position);
     }
 
     public static boolean isPlaceOccupied(Game game, Position position) {
