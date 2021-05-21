@@ -1,6 +1,7 @@
 package com.epex.cerebro.validator;
 
-import com.epex.cosmos.domain.GameBoard;
+import com.epex.cosmos.domain.ChessPiece;
+import com.epex.cosmos.domain.Game;
 import com.epex.cosmos.enums.Position;
 import com.epex.cosmos.enums.Side;
 
@@ -16,28 +17,33 @@ public class MoveValidator {
      * The king does not pass through a square that is attacked by an enemy piece.
      * The king does not end up in check. (True of any legal move.)
      *
-     * @param gameBoard
+     * @param game
      * @param side
      * @return
      */
-    public static boolean isCastlingValidForKingSide(GameBoard gameBoard, Side side) {
+    public static boolean isCastlingValidForKingSide(Game game, Side side) {
         return true;
     }
 
-    public static boolean isCastlingValidForQueenSide(GameBoard gameBoard, Side side) {
+    public static boolean isCastlingValidForQueenSide(Game game, Side side) {
         return true;
     }
 
-    public static boolean isEnPassantTargetValid(GameBoard gameBoard, Side side) {
+    public static boolean isEnPassantTargetValid(Game game, Side side) {
         return true;
     }
 
-    public static boolean isKingInCheck(GameBoard gameBoard) {
-        return true;
+    public static boolean isKingInCheck(Game game) {
+        return false;
     }
 
-    public static boolean isPlaceOccupied(GameBoard gameBoard, Position position) {
-        return gameBoard.getChessPieces()[position.getColumn()][position.getRow()] == null;
+    public static boolean isPlaceOccupied(Game game, Position position) {
+        ChessPiece chessPieceAtPosition = game.getGameBoard().getChessPieces()[position.getColumn()][position.getRow()];
+        return chessPieceAtPosition == null || chessPieceAtPosition.getPiece().getSide() != game.getBotSide();
+    }
+
+    public static boolean isValidPositionToMove(Game game, Position position) {
+        return !isPlaceOccupied(game, position) && isKingInCheck(game);
     }
 
 }
