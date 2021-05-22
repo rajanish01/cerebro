@@ -92,27 +92,27 @@ public class PermissiblePositionGenerator {
         int rowItr = currentRow - 1;
         while (colItr >= MIN_COL) {
             expectedPosition = Position.fromValue(colItr, currentRow);
-            if (MoveValidator.isValidPositionToMove(game, expectedPosition)) break;
+            if (!MoveValidator.isValidPositionToMove(game, expectedPosition)) break;
             validPositions.add(expectedPosition);
             colItr--;
         }
         colItr = currentColumn + 1;
         while (colItr <= MAX_COL) {
             expectedPosition = Position.fromValue(colItr, currentRow);
-            if (MoveValidator.isValidPositionToMove(game, expectedPosition)) break;
+            if (!MoveValidator.isValidPositionToMove(game, expectedPosition)) break;
             validPositions.add(expectedPosition);
             colItr++;
         }
         while (rowItr >= MIN_ROW) {
             expectedPosition = Position.fromValue(currentColumn, rowItr);
-            if (MoveValidator.isValidPositionToMove(game, expectedPosition)) break;
+            if (!MoveValidator.isValidPositionToMove(game, expectedPosition)) break;
             validPositions.add(expectedPosition);
             rowItr--;
         }
         rowItr = currentRow + 1;
         while (rowItr <= MAX_ROW) {
             expectedPosition = Position.fromValue(currentColumn, rowItr);
-            if (MoveValidator.isValidPositionToMove(game, expectedPosition)) break;
+            if (!MoveValidator.isValidPositionToMove(game, expectedPosition)) break;
             validPositions.add(expectedPosition);
             rowItr++;
         }
@@ -128,7 +128,7 @@ public class PermissiblePositionGenerator {
         int rowItr = currentRow - 1;
         while (colItr >= MIN_COL && rowItr >= MIN_ROW) {
             expectedPosition = Position.fromValue(colItr, rowItr);
-            if (MoveValidator.isValidPositionToMove(game, expectedPosition)) break;
+            if (!MoveValidator.isValidPositionToMove(game, expectedPosition)) break;
             validPositions.add(expectedPosition);
             colItr--;
             rowItr--;
@@ -137,7 +137,7 @@ public class PermissiblePositionGenerator {
         rowItr = currentRow + 1;
         while (colItr >= MIN_COL && rowItr <= MAX_COL) {
             expectedPosition = Position.fromValue(colItr, rowItr);
-            if (MoveValidator.isValidPositionToMove(game, expectedPosition)) break;
+            if (!MoveValidator.isValidPositionToMove(game, expectedPosition)) break;
             validPositions.add(expectedPosition);
             colItr--;
             rowItr++;
@@ -146,7 +146,7 @@ public class PermissiblePositionGenerator {
         rowItr = currentRow - 1;
         while (colItr < MAX_ROW && rowItr >= MIN_ROW) {
             expectedPosition = Position.fromValue(colItr, rowItr);
-            if (MoveValidator.isValidPositionToMove(game, expectedPosition)) break;
+            if (!MoveValidator.isValidPositionToMove(game, expectedPosition)) break;
             validPositions.add(expectedPosition);
             colItr++;
             rowItr--;
@@ -155,7 +155,7 @@ public class PermissiblePositionGenerator {
         rowItr = currentRow + 1;
         while (colItr <= MAX_COL && rowItr <= MAX_ROW) {
             expectedPosition = Position.fromValue(colItr, rowItr);
-            if (MoveValidator.isValidPositionToMove(game, expectedPosition)) break;
+            if (!MoveValidator.isValidPositionToMove(game, expectedPosition)) break;
             validPositions.add(expectedPosition);
             colItr++;
             rowItr++;
