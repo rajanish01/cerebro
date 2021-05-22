@@ -1,6 +1,5 @@
 package com.epex.cerebro.validator;
 
-import com.epex.cosmos.domain.ChessPiece;
 import com.epex.cosmos.domain.Game;
 import com.epex.cosmos.enums.Position;
 import com.epex.cosmos.enums.Side;
@@ -30,25 +29,30 @@ public class MoveValidator {
     }
 
     public static boolean isPawnEnPassing(Game game, Position position) {
-        return true;
+        return false;
     }
 
     public static boolean isKingInCheck(Game game) {
         return false;
     }
 
-    public static boolean isPawnAttacking(Game game, Position position) {
-        ChessPiece chessPieceAtPosition = game.getGameBoard().getChessPieces()[position.getColumn()][position.getRow()];
-        return chessPieceAtPosition != null || isPawnEnPassing(game, position);
+    public static boolean isPawnAttackingAtPosition(Game game, Position position) {
+        var chessPieceAtPosition = game.getGameBoard().getChessPieces()[position.getColumn()][position.getRow()];
+        return chessPieceAtPosition != null && chessPieceAtPosition.getPiece().getSide() != game.getBotSide();
     }
 
-    public static boolean isPlaceOccupied(Game game, Position position) {
-        ChessPiece chessPieceAtPosition = game.getGameBoard().getChessPieces()[position.getColumn()][position.getRow()];
-        return chessPieceAtPosition == null || chessPieceAtPosition.getPiece().getSide() != game.getBotSide();
+    public static boolean isPawnBlockedAtPosition(Game game, Position position) {
+        var chessPieceAtPosition = game.getGameBoard().getChessPieces()[position.getColumn()][position.getRow()];
+        return chessPieceAtPosition != null;
+    }
+
+    public static boolean isPositionOccupied(Game game, Position position) {
+        var chessPieceAtPosition = game.getGameBoard().getChessPieces()[position.getColumn()][position.getRow()];
+        return chessPieceAtPosition != null && chessPieceAtPosition.getPiece().getSide() == game.getBotSide();
     }
 
     public static boolean isValidPositionToMove(Game game, Position position) {
-        return !isPlaceOccupied(game, position) && isKingInCheck(game);
+        return !isPositionOccupied(game, position) && !isKingInCheck(game);
     }
 
 }

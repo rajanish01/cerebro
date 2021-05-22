@@ -30,41 +30,55 @@ public class PermissiblePositionGenerator {
         if (activePawn.getPiece().getSide() == Side.WHITE) {
             if (currentRow == 6) {
                 expectedPosition = Position.fromValue(currentColumn, currentRow - 1);
-                if (MoveValidator.isValidPositionToMove(game, expectedPosition))
+                if (MoveValidator.isValidPositionToMove(game, expectedPosition)
+                        && !MoveValidator.isPawnBlockedAtPosition(game, expectedPosition))
                     validPositions.add(expectedPosition);
                 expectedPosition = Position.fromValue(currentColumn, currentRow - 2);
-                if (MoveValidator.isValidPositionToMove(game, expectedPosition))
+                if (MoveValidator.isValidPositionToMove(game, expectedPosition)
+                        && !MoveValidator.isPawnBlockedAtPosition(game, expectedPosition))
                     validPositions.add(expectedPosition);
             } else {
                 expectedPosition = Position.fromValue(currentColumn, currentRow - 1);
-                if (MoveValidator.isValidPositionToMove(game, expectedPosition))
+                if (MoveValidator.isValidPositionToMove(game, expectedPosition)
+                        && !MoveValidator.isPawnBlockedAtPosition(game, expectedPosition))
                     validPositions.add(expectedPosition);
             }
-            expectedPosition = Position.fromValue(currentColumn - 1, currentRow - 1);
-            if (MoveValidator.isPawnAttacking(game, expectedPosition))
-                validPositions.add(expectedPosition);
-            expectedPosition = Position.fromValue(currentColumn + 1, currentRow - 1);
-            if (MoveValidator.isPawnAttacking(game, expectedPosition))
-                validPositions.add(expectedPosition);
+            if (currentColumn - 1 >= MIN_COL && currentRow - 1 >= MIN_ROW) {
+                expectedPosition = Position.fromValue(currentColumn - 1, currentRow - 1);
+                if (MoveValidator.isPawnAttackingAtPosition(game, expectedPosition))
+                    validPositions.add(expectedPosition);
+            }
+            if (currentColumn + 1 <= MAX_COL && currentRow - 1 >= MIN_ROW) {
+                expectedPosition = Position.fromValue(currentColumn + 1, currentRow - 1);
+                if (MoveValidator.isPawnAttackingAtPosition(game, expectedPosition))
+                    validPositions.add(expectedPosition);
+            }
         } else {
             if (currentRow == 1) {
                 expectedPosition = Position.fromValue(currentColumn, currentRow + 1);
-                if (MoveValidator.isValidPositionToMove(game, expectedPosition))
+                if (MoveValidator.isValidPositionToMove(game, expectedPosition)
+                        && !MoveValidator.isPawnBlockedAtPosition(game, expectedPosition))
                     validPositions.add(expectedPosition);
                 expectedPosition = Position.fromValue(currentColumn, currentRow + 2);
-                if (MoveValidator.isValidPositionToMove(game, expectedPosition))
+                if (MoveValidator.isValidPositionToMove(game, expectedPosition)
+                        && !MoveValidator.isPawnBlockedAtPosition(game, expectedPosition))
                     validPositions.add(expectedPosition);
             } else {
                 expectedPosition = Position.fromValue(currentColumn, currentRow + 1);
-                if (MoveValidator.isValidPositionToMove(game, expectedPosition))
+                if (MoveValidator.isValidPositionToMove(game, expectedPosition)
+                        && !MoveValidator.isPawnBlockedAtPosition(game, expectedPosition))
                     validPositions.add(expectedPosition);
             }
-            expectedPosition = Position.fromValue(currentColumn - 1, currentRow + 1);
-            if (MoveValidator.isPawnAttacking(game, expectedPosition))
-                validPositions.add(expectedPosition);
-            expectedPosition = Position.fromValue(currentColumn + 1, currentRow + 1);
-            if (MoveValidator.isPawnAttacking(game, expectedPosition))
-                validPositions.add(expectedPosition);
+            if (currentColumn - 1 >= MIN_COL && currentRow + 1 <= MAX_ROW) {
+                expectedPosition = Position.fromValue(currentColumn - 1, currentRow + 1);
+                if (MoveValidator.isPawnAttackingAtPosition(game, expectedPosition))
+                    validPositions.add(expectedPosition);
+            }
+            if (currentColumn + 1 <= MAX_COL && currentRow + 1 <= MAX_ROW) {
+                expectedPosition = Position.fromValue(currentColumn + 1, currentRow + 1);
+                if (MoveValidator.isPawnAttackingAtPosition(game, expectedPosition))
+                    validPositions.add(expectedPosition);
+            }
         }
         return validPositions;
     }
