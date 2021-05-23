@@ -6,11 +6,15 @@ import com.epex.cosmos.domain.Game;
 import com.epex.cosmos.enums.Position;
 import com.epex.cosmos.enums.Side;
 import com.google.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 @SuppressWarnings("unused")
 public class PermissiblePositionGenerator {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private static final int MAX_ROW = 7;
     private static final int MIN_ROW = 0;
@@ -33,10 +37,12 @@ public class PermissiblePositionGenerator {
                 if (MoveValidator.isValidPositionToMove(game, expectedPosition)
                         && !MoveValidator.isPawnBlockedAtPosition(game, expectedPosition))
                     validPositions.add(expectedPosition);
-                expectedPosition = Position.fromValue(currentColumn, currentRow - 2);
-                if (MoveValidator.isValidPositionToMove(game, expectedPosition)
-                        && !MoveValidator.isPawnBlockedAtPosition(game, expectedPosition))
-                    validPositions.add(expectedPosition);
+                if (!MoveValidator.isPawnBlockedAtPosition(game, expectedPosition)) {
+                    expectedPosition = Position.fromValue(currentColumn, currentRow - 2);
+                    if (MoveValidator.isValidPositionToMove(game, expectedPosition)
+                            && !MoveValidator.isPawnBlockedAtPosition(game, expectedPosition))
+                        validPositions.add(expectedPosition);
+                }
             } else {
                 expectedPosition = Position.fromValue(currentColumn, currentRow - 1);
                 if (MoveValidator.isValidPositionToMove(game, expectedPosition)
@@ -59,10 +65,12 @@ public class PermissiblePositionGenerator {
                 if (MoveValidator.isValidPositionToMove(game, expectedPosition)
                         && !MoveValidator.isPawnBlockedAtPosition(game, expectedPosition))
                     validPositions.add(expectedPosition);
-                expectedPosition = Position.fromValue(currentColumn, currentRow + 2);
-                if (MoveValidator.isValidPositionToMove(game, expectedPosition)
-                        && !MoveValidator.isPawnBlockedAtPosition(game, expectedPosition))
-                    validPositions.add(expectedPosition);
+                if (!MoveValidator.isPawnBlockedAtPosition(game, expectedPosition)) {
+                    expectedPosition = Position.fromValue(currentColumn, currentRow + 2);
+                    if (MoveValidator.isValidPositionToMove(game, expectedPosition)
+                            && !MoveValidator.isPawnBlockedAtPosition(game, expectedPosition))
+                        validPositions.add(expectedPosition);
+                }
             } else {
                 expectedPosition = Position.fromValue(currentColumn, currentRow + 1);
                 if (MoveValidator.isValidPositionToMove(game, expectedPosition)
@@ -94,6 +102,7 @@ public class PermissiblePositionGenerator {
             expectedPosition = Position.fromValue(colItr, currentRow);
             if (!MoveValidator.isValidPositionToMove(game, expectedPosition)) break;
             validPositions.add(expectedPosition);
+            if (MoveValidator.isPositionAttackable(game, expectedPosition)) break;
             colItr--;
         }
         colItr = currentColumn + 1;
@@ -101,12 +110,14 @@ public class PermissiblePositionGenerator {
             expectedPosition = Position.fromValue(colItr, currentRow);
             if (!MoveValidator.isValidPositionToMove(game, expectedPosition)) break;
             validPositions.add(expectedPosition);
+            if (MoveValidator.isPositionAttackable(game, expectedPosition)) break;
             colItr++;
         }
         while (rowItr >= MIN_ROW) {
             expectedPosition = Position.fromValue(currentColumn, rowItr);
             if (!MoveValidator.isValidPositionToMove(game, expectedPosition)) break;
             validPositions.add(expectedPosition);
+            if (MoveValidator.isPositionAttackable(game, expectedPosition)) break;
             rowItr--;
         }
         rowItr = currentRow + 1;
@@ -114,6 +125,7 @@ public class PermissiblePositionGenerator {
             expectedPosition = Position.fromValue(currentColumn, rowItr);
             if (!MoveValidator.isValidPositionToMove(game, expectedPosition)) break;
             validPositions.add(expectedPosition);
+            if (MoveValidator.isPositionAttackable(game, expectedPosition)) break;
             rowItr++;
         }
         return validPositions;
@@ -130,6 +142,7 @@ public class PermissiblePositionGenerator {
             expectedPosition = Position.fromValue(colItr, rowItr);
             if (!MoveValidator.isValidPositionToMove(game, expectedPosition)) break;
             validPositions.add(expectedPosition);
+            if (MoveValidator.isPositionAttackable(game, expectedPosition)) break;
             colItr--;
             rowItr--;
         }
@@ -139,6 +152,7 @@ public class PermissiblePositionGenerator {
             expectedPosition = Position.fromValue(colItr, rowItr);
             if (!MoveValidator.isValidPositionToMove(game, expectedPosition)) break;
             validPositions.add(expectedPosition);
+            if (MoveValidator.isPositionAttackable(game, expectedPosition)) break;
             colItr--;
             rowItr++;
         }
@@ -148,6 +162,7 @@ public class PermissiblePositionGenerator {
             expectedPosition = Position.fromValue(colItr, rowItr);
             if (!MoveValidator.isValidPositionToMove(game, expectedPosition)) break;
             validPositions.add(expectedPosition);
+            if (MoveValidator.isPositionAttackable(game, expectedPosition)) break;
             colItr++;
             rowItr--;
         }
@@ -157,6 +172,7 @@ public class PermissiblePositionGenerator {
             expectedPosition = Position.fromValue(colItr, rowItr);
             if (!MoveValidator.isValidPositionToMove(game, expectedPosition)) break;
             validPositions.add(expectedPosition);
+            if (MoveValidator.isPositionAttackable(game, expectedPosition)) break;
             colItr++;
             rowItr++;
         }

@@ -51,6 +51,11 @@ public class MoveValidator {
         return chessPieceAtPosition != null && chessPieceAtPosition.getPiece().getSide() == game.getBotSide();
     }
 
+    public static boolean isPositionAttackable(Game game, Position position) {
+        var chessPieceAtPosition = game.getGameBoard().getChessPieces()[position.getColumn()][position.getRow()];
+        return chessPieceAtPosition != null && chessPieceAtPosition.getPiece().getSide() != game.getBotSide();
+    }
+
     public static boolean isValidPositionToMove(Game game, Position position) {
         return !isPositionOccupied(game, position) && !isKingInCheck(game);
     }
